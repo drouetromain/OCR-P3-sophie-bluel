@@ -80,7 +80,7 @@ btnTous.addEventListener("click", function(){
     console.log(projectsFiltered);
 });*/
 
-/* Filter les projets par Objets */
+/* Filtrer les projets par Objets */
 const inputFilteredProjectsByObjets = document.querySelector('#btn-objets')
 inputFilteredProjectsByObjets.addEventListener('click', function(){
     const filteredProjectsByObjets = projects.filter(function(project){
@@ -90,7 +90,7 @@ inputFilteredProjectsByObjets.addEventListener('click', function(){
     genererProjects(filteredProjectsByObjets);    
 })
 
-/* Filter les projets par Appartements */
+/* Filtrer les projets par Appartements */
 const inputFilteredProjectsByAppartements = document.querySelector('#btn-appartements')
 inputFilteredProjectsByAppartements.addEventListener('click', function(){
     const filteredProjectsByAppartements = projects.filter(function(project){
@@ -100,7 +100,7 @@ inputFilteredProjectsByAppartements.addEventListener('click', function(){
     genererProjects(filteredProjectsByAppartements);    
 }) 
 
-/* Filter les projets par Hôtels */
+/* Filtrer les projets par Hôtels */
 const inputFilteredProjectsByHotels = document.querySelector('#btn-hotels')
 inputFilteredProjectsByHotels.addEventListener('click', function(){
     const filteredProjectsByHotels = projects.filter(function(project){
@@ -110,7 +110,7 @@ inputFilteredProjectsByHotels.addEventListener('click', function(){
     genererProjects(filteredProjectsByHotels);    
 }) 
 
-/* Filter les projets par Tous */
+/* Filtrer les projets par Tous */
 const inputNotFilteredProjects = document.querySelector('#btn-tous')
 inputNotFilteredProjects.addEventListener('click', function(){
     const notFilteredProjects = projects.filter(function(project){
