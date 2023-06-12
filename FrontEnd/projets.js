@@ -120,6 +120,32 @@ inputNotFilteredProjects.addEventListener('click', function(){
     genererProjects(notFilteredProjects);    
 }) 
 
+// Vérifier si le user est déja loggé
+function checkConnectedUser(){
+    const token = localStorage.getItem("token");
+    console.log(token);
+    if(token != null && token != undefined){
+        const logged = document.querySelector('#btn-login');
+        logged.textContent = "Log out";
+    }
+}
+
+checkConnectedUser();
+
+// Délogger le user
+function logOut(){
+    const token = localStorage.getItem("token");
+    if(token != null && token != undefined){
+        const removeUser = document.querySelector('#btn-login');
+        removeUser.addEventListener('click', function(){
+            event.preventDefault();
+            window.location.href = "/FrontEnd/";
+            localStorage.removeItem("token");
+            });
+    }
+}
+
+logOut();
 /*
 let btnTous = document.getElementById("tous");
 btnTous.addEventListener("click", () => {
