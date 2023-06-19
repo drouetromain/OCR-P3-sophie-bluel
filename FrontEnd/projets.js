@@ -138,8 +138,11 @@ inputNotFilteredProjects.addEventListener('click', function(){
 
 // Vérifier si le user est déja loggé
 function checkConnectedUser(){
+    const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
+    
     console.log(token);
+    console.log("userId: " + userId);
     if(token != null && token != undefined){
         const logged = document.querySelector('#btn-login');
         logged.textContent = "Logout";
@@ -163,12 +166,14 @@ checkConnectedUser();
 // Délogger le user
 function logOut(){
     const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
     if(token != null && token != undefined){
         const removeUser = document.querySelector('#btn-login');
         removeUser.addEventListener('click', function(){
             event.preventDefault();
             window.location.href = "/FrontEnd/";
             localStorage.removeItem("token");
+            localStorage.removeItem("userId");
             });
     }
 }

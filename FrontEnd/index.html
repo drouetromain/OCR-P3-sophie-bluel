@@ -16,8 +16,10 @@
 <body>
 	<div id="top-bar-edition-mode">
 		<div id="edition-mode-block">	
-			<i class="fa-regular fa-pen-to-square modify"></i>
-			<span>Mode édition</span>
+			<a href="#modal-modify" class="js-modal">
+				<i class="fa-regular fa-pen-to-square modify"></i>
+				Mode édition
+			</a>
 			<button id="btn-publish">publier les changements</button>
 		</div>
 	</div>
@@ -37,9 +39,11 @@
 			<section id="introduction">
 				<figure id="intro-block">
 					<img src="./assets/images/sophie-bluel.png" alt="">
-					<div class="modify-block" id="js-modify-project-intro-block">	
-						<i class="fa-regular fa-pen-to-square modify"></i>
-						<span>modifier</span>
+					<div class="modify-block" id="js-modify-project-intro-block">
+						<a href="#modal-modify" class="js-modal">
+							<i class="fa-regular fa-pen-to-square modify"></i>
+							modifier
+						</a>
 					</div>
 				</figure>
 				<article>
@@ -52,12 +56,24 @@
 			<section id="portfolio">
 				<div id="projects-title">
 					<h2>Mes Projets</h2>
-					<div id="js-modify-project-h2">
+					<a href="#modal-modify" id="js-modify-project-h2" class="js-modal">
 					<i class="fa-regular fa-pen-to-square modify"></i>
-					<span>modifier</span>
-					</div>
+					modifier
+					</a>
 				</div>
-				
+				<aside id="modal-modify" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title" style="display:none;">
+					<div class="modal-wrapper js-modal-stop">
+						<button class="js-modal-close"><i class="fa-solid fa-xmark"></i></button>
+						<h1 id="modal-title">Galerie photo</h1>
+						<div class="modal-gallery">
+						</div> 
+						<div class="modal-bottom">
+							<button class="btn-add-picture">Ajouter une photo</button>
+							<a href="#">Supprimer la galerie</a>
+						</div>
+						
+					</div>
+				</aside>
 				<div class="filters" id="js-filters">
 					<!-- <a class="facets" href="#" id="btn-tous">Tous</a>
 					<a class="facets" href="#" id="btn-objets">Objets</a>
@@ -94,5 +110,6 @@
 			</nav>
 		</footer>
 	</div>
+	<script type="module" src="modal.js"></script>
 </body>
 </html>

@@ -26,6 +26,7 @@ function connexionUser() {
             // Si data retourne un token, redirection vers la HP, sinon afficher le message d'erreur
             if (data.token != null && data.token != undefined){
                 localStorage.setItem("token", data.token);
+                localStorage.setItem("userId", data.userId)
                 window.location.href = "/FrontEnd/";
 
             }else{
