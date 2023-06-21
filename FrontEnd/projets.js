@@ -1,33 +1,28 @@
-/*
-//Stockage du content dans le local Storage
-let projects = window.localStorage.getItem('projects');
 
-if (projects === null) {
-    // Récupération du contenu depuis l'API
+// API: Get all project from the API
+export async function getProjectsFromApi() {
     const reponse = await fetch('http://localhost:5678/api/works');
-    projects = await reponse.json();
-    // Transformation du content en JSON
-    const project = JSON.stringify(projects);
-    // Stockage des informations dans le localStorage
-    window.localStorage.setItem("projects", project);
-} else {
-    projects = JSON.parse(projects);
+    let projects = await reponse.json();
+    return projects;
 }
-*/
 
-const reponse = await fetch('http://localhost:5678/api/works');
-let projects = await reponse.json();
-// Transformation du content en JSON
-const project = JSON.stringify(projects);
-   
+// API: Requete API pour générer les catégories
+export async function getCategoriesFromAPI() {
+    const reponseCat = await fetch('http://localhost:5678/api/categories');
+    let categories = await reponseCat.json();
+    return categories;
+}
 
-function genererProjects(projects) {
+// UI: Generate project UI if i'm logged out
+export function renderProjects(projects) {
+
+    // Récupération de l'élément du DOM qui accueillera les projets
+    const divGallery = document.querySelector(".gallery");
+    divGallery.innerHTML = "";
 
     for (let i = 0; i < projects.length; i++) {
 
         const figure = projects[i];
-        // Récupération de l'élément du DOM qui accueillera les projets
-        const divGallery = document.querySelector(".gallery");
 
         // Création d’une balise dédiée à un projet
         const projectElement = document.createElement("figure");
@@ -40,143 +35,70 @@ function genererProjects(projects) {
         titleElement.innerText = figure.title;
 
         // Rattachement de la balise figure a la section Projets
-        
+
         divGallery.appendChild(projectElement);
         projectElement.appendChild(imageElement);
-        projectElement.appendChild(titleElement);  
+        projectElement.appendChild(titleElement);
     }
 }
 
-genererProjects(projects);
+// UI: Generate filters UI
+export function genererCategories(categories, projects) {
 
-const reponseCat = await fetch('http://localhost:5678/api/categories');
-let categories = await reponseCat.json();
-// Transformation du content en JSON
-const categorie = JSON.stringify(categories);
-
-console.log(categories);
-
-function genererCategories(categories) {
-
-    for (let i = 0; i < categories.length; i++) {
-
-        const button = categories[i];
+    categories.forEach(categorie => {
         // Récupération de l'élément du DOM qui accueillera les categories
         const divFilters = document.querySelector(".filters");
 
         // Création d’une balise dédiée à une catégorie
         const categorieElement = document.createElement("div");
-        categorieElement.dataset.id = categories[i].id
+        categorieElement.dataset.id = categorie.id
         categorieElement.classList.add('facets');
 
         // Création des balises 
         const filterElement = document.createElement("button");
-        filterElement.innerText = button.name;
-        filterElement.classList.add('btn-' + button.id);
+        filterElement.innerText = categorie.name;
+        filterElement.classList.add('btn-' + categorie.id);
+        filterElement.id = categorie.id ;
+        filterElement.addEventListener('click', (event) => {
+            const filteredProject = projects.filter((project) => {
+                return project.categoryId == event.target.id;
+            });
+            document.querySelector(".gallery").innerHTML = "";
+            renderProjects(filteredProject);
+        })
 
         // Rattachement de la balise button a la div Filters
-        
         divFilters.appendChild(categorieElement);
         categorieElement.appendChild(filterElement);
 
         // Filtrer les projets
-        const inputFilteredProjectsByObjets = document.querySelector('.btn-' + button.id)
-        inputFilteredProjectsByObjets.addEventListener('click', function(){
-            const filteredProjectsByObjets = projects.filter(function(project){
-                return project.categoryId == button.id;
-            });
-            document.querySelector(".gallery").innerHTML = "";
-            genererProjects(filteredProjectsByObjets);    
-        })
-    }
+        // const inputFilteredProjectsByObjets = document.querySelector('.btn-' + categorie.id)
+    });
+
 }
-
-genererCategories(categories);
-
-
-/*
-// Filtrer les projets par Objets
-const inputFilteredProjectsByObjets = document.querySelector('.btn-1')
-inputFilteredProjectsByObjets.addEventListener('click', function(){
-    const filteredProjectsByObjets = projects.filter(function(project){
-        return project.categoryId == 1;
-    });
-    document.querySelector(".gallery").innerHTML = "";
-    genererProjects(filteredProjectsByObjets);    
-})
-
-// Filtrer les projets par Appartements 
-const inputFilteredProjectsByAppartements = document.querySelector('.btn-2')
-inputFilteredProjectsByAppartements.addEventListener('click', function(){
-    const filteredProjectsByAppartements = projects.filter(function(project){
-        return project.categoryId == 2;
-    });
-    document.querySelector(".gallery").innerHTML = "";
-    genererProjects(filteredProjectsByAppartements);    
-}) 
-
-// Filtrer les projets par Hôtels 
-const inputFilteredProjectsByHotels = document.querySelector('.btn-3')
-inputFilteredProjectsByHotels.addEventListener('click', function(){
-    const filteredProjectsByHotels = projects.filter(function(project){
-        return project.categoryId == 3;
-    });
-    document.querySelector(".gallery").innerHTML = "";
-    genererProjects(filteredProjectsByHotels);    
-}) 
-*/
-// Filtrer les projets par Tous 
-const inputNotFilteredProjects = document.querySelector('#btn-tous')
-inputNotFilteredProjects.addEventListener('click', function(){
-    const notFilteredProjects = projects.filter(function(project){
-        return project.categoryId != null || undefined;
-        // return project.categoryId == 1 || 2 || 3;
-    });
-    document.querySelector(".gallery").innerHTML = "";
-    genererProjects(notFilteredProjects);    
-}) 
 
 // Vérifier si le user est déja loggé
-function checkConnectedUser(){
-    const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("token");
-    
-    console.log(token);
-    console.log("userId: " + userId);
-    if(token != null && token != undefined){
-        const logged = document.querySelector('#btn-login');
-        logged.textContent = "Logout";
+export function loadProject(projects, refresh = false) {
 
-        // Supprimer les filtres
-        const element = document.getElementById("js-filters");
-        element.remove();
-    }else{
-        const topBarEditionMode = document.getElementById("top-bar-edition-mode");
-        topBarEditionMode.remove();
-        const modifyButtonH2 = document.getElementById("js-modify-project-h2");
-        modifyButtonH2.remove();
-        const modifyButtonIntroBlock = document.getElementById("js-modify-project-intro-block");
-        modifyButtonIntroBlock.remove();
-
+    if (imLoggedIn()) {
+        // Filtrer les projets par user connecté 
+        const userId = localStorage.getItem("userId");
+        const projectsOfUser = projects.filter(function (project) {
+            return project.userId == userId;
+        });
+        if(refresh == true){
+            renderProjects(projects);
+        }else{
+            renderProjects(projectsOfUser);
+        }
+    } else {
+        renderProjects(projects);
     }
 }
 
-checkConnectedUser();
-
-// Délogger le user
-function logOut(){
-    const token = localStorage.getItem("token");
+// Check if i'm logged in
+export function imLoggedIn() {
     const userId = localStorage.getItem("userId");
-    if(token != null && token != undefined){
-        const removeUser = document.querySelector('#btn-login');
-        removeUser.addEventListener('click', function(){
-            event.preventDefault();
-            window.location.href = "/FrontEnd/";
-            localStorage.removeItem("token");
-            localStorage.removeItem("userId");
-            });
-    }
+    const token = localStorage.getItem("token");
+    return !!userId && !!token;
 }
-
-logOut();
-
