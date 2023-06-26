@@ -42,7 +42,7 @@ export function renderProjects(projects) {
     }
 }
 
-// UI: Generate filters UI
+// UI: Générer les filtres UI
 export function genererCategories(categories, projects) {
 
     categories.forEach(categorie => {
@@ -71,11 +71,32 @@ export function genererCategories(categories, projects) {
         divFilters.appendChild(categorieElement);
         categorieElement.appendChild(filterElement);
 
-        // Filtrer les projets
-        // const inputFilteredProjectsByObjets = document.querySelector('.btn-' + categorie.id)
     });
 
 }
+
+
+// UI: Générer les categories pour le formulaire de la modal
+
+export function genererCategoriesForm(categories) {
+
+    categories.forEach(categorie => {
+        // Récupération de l'élément du DOM qui accueillera les categories
+        const selectCategoriesInForm = document.querySelector("#categories-options");
+
+        // Création des balises <option>
+        const categorieName = document.createElement("option");
+        categorieName.value = categorie.id;
+        categorieName.innerText = categorie.name;
+        //categorieName.value.add('value' + categorie.id);
+
+        // Rattachement de la balise <option> a la balise <select>
+        selectCategoriesInForm.appendChild(categorieName);
+
+    });
+
+}
+
 
 // Vérifier si le user est déja loggé
 export function loadProject(projects, refresh = false) {
@@ -102,3 +123,4 @@ export function imLoggedIn() {
     const token = localStorage.getItem("token");
     return !!userId && !!token;
 }
+

@@ -2,6 +2,7 @@
 
 import {
     genererCategories,
+    genererCategoriesForm,
     loadProject,
     getProjectsFromApi,
     getCategoriesFromAPI,
@@ -10,6 +11,7 @@ import {
 
 import {
     loadModal
+    //afficherImage
 } from "./modal.js";
 
 // API Calls
@@ -39,6 +41,7 @@ if (!imLoggedIn()) {
 
 // Charger tout les projets et les afficher dans la page
 loadProject(projects);
+genererCategoriesForm(categories);
 // Bind click event for logout action
 const logoutBtn = document.querySelector('#btn-login');
 logoutBtn.addEventListener('click', function (event) {
@@ -87,3 +90,24 @@ if (imLoggedIn()) {
     localStorage.setItem("myProjects", JSON.stringify(projectsOfUser));
     loadModal();   
 }
+
+// Ajouter une image
+let fileInput = document.querySelector("#file");
+let resultat = document.querySelector("#resultat");
+
+fileInput.addEventListener('change', function() {
+    let file = fileInput.files;
+
+    if(file.length > 0){
+        let fileReader = new FileReader();
+        fileReader.onload = function (event){
+            resultat.setAttribute("src", event.target.result);
+        };
+        fileReader.readAsDataURL(file[0]);
+        let addImageBlock = document.querySelector(".add-picture-block");
+        addImageBlock.remove();
+    } else {
+        console.log("Aucun fichier sélectionné");
+    }
+});
+

@@ -485,3 +485,111 @@ body, html {
 	from { transform: translateY(0px);}
 	to { transform: translateY(50px);}
 }
+
+/*Modal 2 */
+
+#load-image{
+	background-color: #E8F1F6;
+}
+
+#load-image img {
+	display: block;
+	width: 50%;
+	margin: auto;
+}
+
+.btn-valider {
+	font-family: 'Syne';
+    font-weight: 700;
+    color: white;
+    background-color: #1D6154;
+    margin: 2em auto;
+	padding: 10px;
+    width: 180px;
+    text-align: center !important;
+    border-radius: 60px;
+	border-style: none;
+
+}
+
+.add-picture-block {
+	background-color: #E8F1F6;
+	display: flex;
+    flex-direction: column;
+}
+
+.add-picture-block .btn-add-picture {
+	background-color: #CBD6DC;
+	color: #306685;
+	margin: 10px auto 10px auto;
+	cursor: pointer;
+}
+
+.add-picture-block .fa-image {
+	font-size: 100px;
+	color: #B9C5CC;
+	text-align: center;
+	padding-top: 28px;
+}
+
+.add-picture-block input[type="file"] {
+	height: 0;
+	width: 0;
+	overflow: hidden;
+}
+
+#max-upload {
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 10px;
+	line-height: 12px;
+	text-align: center;
+	color: #444444;
+	margin-bottom: 20px;
+}
+
+.modal-add-project-contener{
+	display: flex;
+    flex-direction: column;
+    margin: 0 70px 0 70px;
+    padding: 40px 0 0px 0;
+
+}
+
+#modal-add-project .js-modal-close {
+	text-align: left;
+
+}
+
+.modal-add-project-contener label{
+	margin: 2em 0 1em 0;
+}
+
+#js-categorie-options {
+	display: flex;
+	flex-direction: column;
+	border-bottom: solid 1px #B3B3B3;
+	padding-bottom: 4em;
+}
+
+.modal-add-project-contener input, select{
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+select option {
+	font-family: 'Work Sans';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 16px;
+	color: #444444;
+}
+
+.modal-add-project-contener input[type="submit"]{
+	background-color: #A7A7A7;
+	width: 237px;
+}

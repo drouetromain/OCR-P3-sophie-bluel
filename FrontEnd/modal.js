@@ -81,6 +81,7 @@ export function loadModal() {
         }
     })
 
+    // Modal 1 : Suppression des projets
     for (let i = 0; i < projects.length; i++) {
 
         const currentProject = projects[i];
@@ -121,5 +122,42 @@ export function loadModal() {
         projectElement.appendChild(deleteElement);
         deleteElement.appendChild(deleteIconElement);
 
+        // Lien vers modal 2
+        /*
+        const buttonGotoModal2 = document.querySelector(".js-goto-modal-add-project");
+        console.log(buttonGotoModal2);
+        buttonGotoModal2.addEventListener("click", gotoModal2);
+        function gotoModal2() {
+        onclick=window.location.href = '#modal-add-project';
+        }
+        */
+        // Modal 2 : Ajout de projets
+        
+        
+        
+
     }
 }
+
+/*
+// Ajouter une image
+//const buttonAddImage = document.querySelector(".js-btn-add-picture");
+//buttonAddImage.addEventListener("click", afficherImage());
+export function afficherImage(){
+    let file = document.querySelector("#file").files;
+    let resultat = document.querySelector("#resultat");
+    if(file.length > 0){
+        let fileReader = new FileReader();
+        fileReader.onload = function (event){
+            document
+                .getElementById("resultat")
+                .setAttribute("src", event.target.result);
+            };
+        fileReader.readAsDataURL(file[0]);
+        let addImageBlock = document.querySelector(".add-picture-block");
+        console.log("test2");
+        //addImageBlock.remove();
+    }
+    
+}
+*/
