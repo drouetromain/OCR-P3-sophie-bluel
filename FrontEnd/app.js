@@ -60,7 +60,7 @@ logoutBtn.addEventListener('click', function (event) {
 
 });
 
-// Rednder UI
+// Générer UI LogIn / LogOut
 if (imLoggedIn()) {
     logoutBtn.textContent = "Logout";
     // Hide edit elements
@@ -79,14 +79,14 @@ if (imLoggedIn()) {
     modifyButtonIntroBlock.style.display = "none";
 }
 
-// 
+// Stocker les projets de l'utilisateur connecté dans le localStorage
 if (imLoggedIn()) {
     const userId = localStorage.getItem("userId");
     const projectsOfUser = projects.filter(function (project) {
         return project.userId == userId;
     });
 
-    // Sauver projects dans localstorage
+    // Sauver projects dans localStorage
     localStorage.setItem("myProjects", JSON.stringify(projectsOfUser));
     loadModal();   
 }
@@ -97,15 +97,20 @@ let resultat = document.querySelector("#resultat");
 
 fileInput.addEventListener('change', function() {
     let file = fileInput.files;
-
+    
     if(file.length > 0){
         let fileReader = new FileReader();
         fileReader.onload = function (event){
             resultat.setAttribute("src", event.target.result);
-        };
+        }
         fileReader.readAsDataURL(file[0]);
-        let addImageBlock = document.querySelector(".add-picture-block");
-        addImageBlock.remove();
+        //let addImageBlock = document.querySelector(".add-picture-block");
+        let hideBlockAddPicture = document.getElementById("js-hide-block-add-picture");
+        hideBlockAddPicture.style.display = "none";
+        //addImageBlock.remove();
+
+        // Rajout du bloc "add-picture-block"
+
     } else {
         console.log("Aucun fichier sélectionné");
     }

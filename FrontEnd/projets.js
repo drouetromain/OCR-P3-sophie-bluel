@@ -42,6 +42,8 @@ export function renderProjects(projects) {
     }
 }
 
+
+
 // UI: Générer les filtres UI
 export function genererCategories(categories, projects) {
 

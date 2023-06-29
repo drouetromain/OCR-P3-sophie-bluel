@@ -65,43 +65,43 @@
 				</div>
 
 				<aside id="modal-modify" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title" style="display:none;">
-					<div class="modal-wrapper js-modal-stop">
+					<div class="modal-wrapper js-modal-stop js-modal-1">
 						<button class="js-modal-close"><i class="fa-solid fa-xmark"></i></button>
 						<h1 id="modal-title">Galerie photo</h1>
-						<div class="modal-gallery">
+						<div class="modal-gallery" id="clear-modal-1">
 						</div> 
 						<div class="modal-bottom">
-							<button href="#modal-add-project" class="btn-add-picture js-goto-modal-add-project js-modal">Ajouter une photo</button>
+							<button href="#modal-add-project" class="btn-add-picture js-open-modal-2">Ajouter une photo</button>
 							<a href="#">Supprimer la galerie</a>
 						</div>
-						
 					</div>
 				</aside>
 
 				<aside id="modal-add-project" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title" style="display:none;">
 					<div class="modal-wrapper js-modal-stop">
-						<button class="js-modal-close"><i class="fa-solid fa-arrow-left"></i></button>
+						<button class="js-modal-return"><i class="fa-solid fa-arrow-left"></i></button>
 						<h1 id="modal-title">Ajout photo</h1>
-						<form>
+						<form name="formaddproject" class="js-form-add-new-project" id="js-reset-form">
 							<div class="modal-add-project-contener">
 								<fieldset id="load-image">
 									<img id="resultat">
 								</fieldset>
-								<div class="add-picture-block">
+								<div class="add-picture-block" id="js-hide-block-add-picture">
 									
 									<i class="fa-regular fa-image"></i>
 									<label for="file" class="btn-add-picture js-btn-add-picture">+ Ajouter photo</label>
-									<input type="file" name="image" id="file" accept="image/png, image/jpg">
+									<input type="file" name="image" class="js-new-project-image" id="file" accept="image/png, image/jpg" required>
 									<span id="max-upload">jpg, png 4mo max</span>
 								</div>
 								<label for="name">Titre</label>
-								<input type="text" id="name" name="name" required minlength="4" maxlength="30" size="30">
+								<input type="text" id="name" class="js-new-project-title" name="name" required minlength="4" maxlength="30" size="30">
 								<div id="js-categorie-options">
 									<label for="categories-options">Catégorie</label>
 									<select id="categories-options" name="categorie" required>
 									<option value="0"></option>
 									</select>
 								</div>
+								<div id="form-add-project-error-message"></div>
 								<input type="submit" value="Valider" class="btn-valider">
 							</div>
 						</form>
@@ -118,8 +118,8 @@
 				<h2>Contact</h2>
 				<p>Vous avez un projet ? Discutons-en !</p>
 				<form action="#" method="post">
-					<label for="name">Nom</label>
-					<input type="text" name="name" id="name">
+					<label for="name-contact">Nom</label>
+					<input type="text" name="name-contact" id="name-contact">
 					<label for="email">Email</label>
 					<input type="email" name="email" id="email">
 					<label for="message">Message</label>

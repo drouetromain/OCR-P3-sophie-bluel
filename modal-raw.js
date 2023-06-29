@@ -16,7 +16,7 @@ export function loadModal() {
     let focusables = [];
     let previouslyFocusedElement = null;
 
-    // Ouverture de la modal 1
+    // Ouverture de la modal
     let modal = null;
 
     const openModal = function (e) {
@@ -34,39 +34,6 @@ export function loadModal() {
 
     }
 
-    // Ouverture de la modal 2
-    let modal2 = null;
-
-    const openModal2 = function (e) {
-        e.preventDefault();
-        modal2 = document.querySelector(e.target.getAttribute('href'));
-        focusables = Array.from(modal2.querySelectorAll(focusableSelector));
-        previouslyFocusedElement = document.querySelector(':focus');
-        modal2.style.display = null;
-        focusables[0].focus();
-        modal2.removeAttribute('aria-hidden');
-        modal2.setAttribute('aria-modal', 'true');
-        modal2.addEventListener('click', closeModal2);
-        modal2.querySelector('.js-modal-return').addEventListener('click', closeModal2);
-        modal2.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
-
-        // Suppression du message d'erreur si il existe
-        const divErrorMessage = document.querySelector("#form-add-project-error-message");
-        let content = divErrorMessage.innerHTML;
-        console.log("contents:" + content);
-        if (content !== ''){
-            const element = document.getElementById("form-display-error-message");
-            element.remove(); 
-            
-            //const divDisplayErrorMessage = document.createElement("div");
-            //divDisplayErrorMessage.setAttribute("id","form-display-error-message");
-            //divErrorMessage.appendChild(divDisplayErrorMessage);
-            //document.getElementById("form-display-error-message").innerHTML += "Veuillez sélectionner une catégorie à votre projet";
-        }
-
-    }
-
-    // Fermeture de la modal 1
     const closeModal = function (e) {
         if (modal === null) return;
         if (previouslyFocusedElement !== null) previouslyFocusedElement.focus();
@@ -80,25 +47,6 @@ export function loadModal() {
         modal.removeEventListener('click', closeModal);
         modal.querySelector('.js-modal-close').removeEventListener('click', closeModal);
         modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
-
-        const projects = JSON.parse(localStorage.getItem("myProjects"));
-        loadProject(projects, true);
-    }
-
-    // Fermeture de la modal 2
-    const closeModal2 = function (e) {
-        if (modal2 === null) return;
-        if (previouslyFocusedElement !== null) previouslyFocusedElement.focus();
-        e.preventDefault();
-        window.setTimeout(function () {
-            modal2.style.display = "none";
-            modal2 = null;
-        }, 500)
-        modal2.setAttribute('aria-hidden', 'true');
-        modal2.removeAttribute('aria-modal');
-        modal2.removeEventListener('click', closeModal2);
-        modal2.querySelector('.js-modal-return').removeEventListener('click', closeModal2);
-        modal2.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
 
         const projects = JSON.parse(localStorage.getItem("myProjects"));
         loadProject(projects, true);
@@ -124,14 +72,8 @@ export function loadModal() {
         focusables[index].focus();
     }
 
-    // Recherche des liens qui vont ouvrir la MODAL 1
     document.querySelectorAll('.js-modal').forEach(a => {
         a.addEventListener('click', openModal)
-    })
-
-    // Recherche des liens qui vont ouvrir la MODAL 2
-    document.querySelectorAll('.js-open-modal-2').forEach(a => {
-        a.addEventListener('click', openModal2)
     })
 
     // Fermer la modal avec la touche escape
@@ -256,7 +198,7 @@ export function loadModal() {
 
                 if (verifyInputFile.value !== '' && verifyInputName.value !== ''){
                 //if (verifyInputFile.value !== null || verifyInputFile.value !== undefined || verifyInputFile.value !== '' && verifyInputName.value !== null || verifyInputName.value !== undefined || verifyInputName.value !== '' && verifyInputCategories.value !== null || verifyInputCategories.value !== undefined || verifyInputCategories.value !== ''){
-                    closeModal2(event);
+                    closeModal(event);
                     // Ajouter l'objet "addNewProjectToLocalStorage" dans le localStorage
                     let copyOfMyProjects = localStorage.getItem("myProjects");
                     let projectsArray = JSON.parse(copyOfMyProjects);
