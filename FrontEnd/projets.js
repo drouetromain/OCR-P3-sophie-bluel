@@ -1,5 +1,6 @@
 
-// API: Get all project from the API
+
+// API: Récupérer tous les projets de l'API
 export async function getProjectsFromApi() {
     const reponse = await fetch('http://localhost:5678/api/works');
     let projects = await reponse.json();
@@ -13,6 +14,56 @@ export async function getCategoriesFromAPI() {
     return categories;
 }
 
+// API: Requete API pour ajouter les projets
+export async function postProjectToAPI() {
+    
+    const newProjectsToSend = JSON.parse(localStorage.getItem("projectsAdded"));
+    if (newProjectsToSend !== null){
+        newProjectsToSend.forEach(function(project) {
+        
+            let formData = new FormData();
+            formData.append('title', project.title);
+            formData.append('image', project.imageUrl);
+            formData.append('category', project.categoryId);
+    
+            let token = localStorage.getItem("token");
+    
+            const reponseProject = fetch('http://localhost:5678/api/works', 
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "multipart/form-data; boundary=------WebKitFormBoundarysxw1qnGKu95V1YQu",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: formData
+            });
+        });
+    }
+}
+
+// API: Requete API pour supprimer les projets
+export async function postDeletedProjectToAPI() {
+    
+    const newDeletedProjectsToSend = JSON.parse(localStorage.getItem("projectsDeleted"));
+    if (newDeletedProjectsToSend !== null){
+        newDeletedProjectsToSend.forEach(function(project) {
+        
+            let projectId = project.id;
+            let token = localStorage.getItem("token");
+            
+            let myHeaders = new Headers();
+            myHeaders.append("Authorization", `Bearer ${token}`);
+            const reponseProject = fetch('http://localhost:5678/api/works/' + projectId, {
+                method: 'DELETE',
+                headers: myHeaders,
+                redirect: 'follow'
+              });
+        });
+    }
+    
+
+}
+  
 // UI: Generate project UI if i'm logged out
 export function renderProjects(projects) {
 
@@ -26,7 +77,7 @@ export function renderProjects(projects) {
 
         // Création d’une balise dédiée à un projet
         const projectElement = document.createElement("figure");
-        projectElement.dataset.id = projects[i].id
+        projectElement.dataset.id = projects[i].id || 99-i;
 
         // Création des balises 
         const imageElement = document.createElement("img");

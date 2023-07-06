@@ -341,9 +341,7 @@ body, html {
 }
 
 * { box-sizing: border-box; }
-*:focus {
-	box-shadow: 0 0 10px blue;
-}
+
 .modal {
 	position: fixed;
 	display: flex;
@@ -488,6 +486,10 @@ body, html {
 
 /*Modal 2 */
 
+.modal-wrapper .js-modal-return {
+    text-align: start;
+}
+
 #load-image{
 	background-color: #E8F1F6;
 }
@@ -592,4 +594,10 @@ select option {
 .modal-add-project-contener input[type="submit"]{
 	background-color: #A7A7A7;
 	width: 237px;
+}
+
+#form-display-error-message{
+	text-align: center;
+	padding-top: 30px;
+    color: red;
 }

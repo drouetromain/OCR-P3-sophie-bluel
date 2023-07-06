@@ -9,7 +9,9 @@ const categories = await getCategoriesFromAPI();
 
 export function loadModal() {
 
-    let projects = JSON.parse(localStorage.getItem("myProjects"));
+    const myProjects = JSON.parse(localStorage.getItem("myProjects"));
+    const myAddedProjects = JSON.parse(localStorage.getItem("projectsAdded")) || [];
+    let projects = [...myProjects,...myAddedProjects]
 
     // Cibler les éléments pour l'accessibilité (tab)
     const focusableSelector = "button, a, input, textarea";
@@ -53,7 +55,6 @@ export function loadModal() {
         // Suppression du message d'erreur si il existe
         const divErrorMessage = document.querySelector("#form-add-project-error-message");
         let content = divErrorMessage.innerHTML;
-        console.log("contents:" + content);
         if (content !== ''){
             const element = document.getElementById("form-display-error-message");
             element.remove(); 
@@ -81,8 +82,10 @@ export function loadModal() {
         modal.querySelector('.js-modal-close').removeEventListener('click', closeModal);
         modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
 
-        const projects = JSON.parse(localStorage.getItem("myProjects"));
-        loadProject(projects, true);
+        const myProjects = JSON.parse(localStorage.getItem("myProjects"));
+        const myAddedProjects = JSON.parse(localStorage.getItem("projectsAdded")) || [];
+    
+        loadProject([...myProjects,...myAddedProjects], true);
     }
 
     // Fermeture de la modal 2
@@ -100,8 +103,7 @@ export function loadModal() {
         modal2.querySelector('.js-modal-return').removeEventListener('click', closeModal2);
         modal2.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
 
-        const projects = JSON.parse(localStorage.getItem("myProjects"));
-        loadProject(projects, true);
+        
     }
 
     // Eviter la propagation de l'événement close dans les éléments parents
@@ -111,7 +113,6 @@ export function loadModal() {
 
     const focusInModal = function (e) {
         e.preventDefault();
-        console.log(focusables);
         let index = focusables.findIndex(f => f === modal.querySelector(':focus'));
         if (e.shiftkey === true) {
             index--;
@@ -173,8 +174,32 @@ export function loadModal() {
             const newProjects = previousProjectsList.filter(element => element.id != event.target.id);
             let figureToBeDeleted = document.querySelectorAll(`[data-id='${event.target.id}']`);
             figureToBeDeleted[0]?.remove();
-            // Puis suavegarder la resultat dans le storage 
+            // Puis sauvegarder la resultat dans le storage 
             localStorage.setItem("myProjects", JSON.stringify(newProjects));
+            console.log("Je supprime le projet du localStorage");
+
+            
+            // Stockage des IDs des projets supprimés dans le localStorage
+            const projectsDeletedArray = [];
+            const projectsDeletedArrayStored  = JSON.parse(localStorage.getItem("projectsDeleted"));
+
+            if (projectsDeletedArrayStored == null){
+                projectsDeletedArray.push({id:`${event.target.id}`});
+                console.log("Il n'y a pas de projet supprimé dans le localStorage");
+                //Puis sauvegarder la resultat dans le storage 
+                localStorage.setItem("projectsDeleted", JSON.stringify(projectsDeletedArray));
+            }else{
+                let projectsDeletedArrayUpdated = projectsDeletedArray.concat(projectsDeletedArrayStored);
+                projectsDeletedArrayUpdated.push({id:`${event.target.id}`});
+                console.log("j'ajoute un projet supprimé dans le localStorage");
+                //Puis sauvegarder la resultat dans le storage 
+                localStorage.setItem("projectsDeleted", JSON.stringify(projectsDeletedArrayUpdated));
+            }
+            //projectsDeletedArray.push({id:`${event.target.id}`});
+            //console.log("element.id :" + `${event.target.id}`);
+
+            
+            
         })
 
         // Rattachement de la balise figure a la section Projets
@@ -198,7 +223,6 @@ export function loadModal() {
 
             // Récupérer l'url de l'image
             const urlImg = document.querySelector("#resultat");
-            console.log("urlImg : " + urlImg.src);
 
             // Récupérer l' userId du localStorage
             const userId = localStorage.getItem("userId");
@@ -207,13 +231,11 @@ export function loadModal() {
             // Récupérer la categoryId du formulaire
             const categoryId = document.querySelector("#categories-options");
             const categoryIdNumber = Number(categoryId.value);
-            console.log("categoryIdNumber: " + categoryIdNumber);
 
             if (categoryIdNumber !== 0){
                 // Je vérifie qu'un message d'erreur est présent
                 const divErrorMessage = document.querySelector("#form-add-project-error-message");
                 let content = divErrorMessage.innerHTML;
-                console.log("contents:" + content);
                 if (content !== ''){
                     // Je le supprime le message d'erreur
                     const divToRemove = document.getElementById("form-display-error-message");
@@ -225,17 +247,11 @@ export function loadModal() {
                     // Si la categoryIdNumber = 1 alors categories.id = 1 ...
                     let i = categoryIdNumber; 
                     let objectCategorieId = categories[i-1].id;
-                    let objectCategorieName = categories[i-1].name;
-                    console.log(categories.find(obj => obj.id == i));
-                    console.log("categoryIdNumber: " + categoryIdNumber);
-                    console.log("objectCategorieName: " + objectCategorieName);
-
-                // Incrémentation : Connaitre le dernier id des projects de l'API
-            
+                    let objectCategorieName = categories[i-1].name;          
 
                 // Récupération des valeurs du formulaire
                 const addNewProjectToLocalStorage = {
-                id: 12,
+                id: null,
                 title: document.querySelector(".js-new-project-title").value,
                 imageUrl: urlImg.src,
                 categoryId: categoryIdNumber, 
@@ -248,21 +264,35 @@ export function loadModal() {
 
                 // Fermer la modal avec le boutton valider, si input file != null, input name !=null et select categories != null
                 let verifyInputFile = document.getElementById("file");
-                console.log("verify img: " + verifyInputFile.value);
                 let verifyInputName = document.getElementById("name");
-                console.log("verify name: " + verifyInputName.value);
-                let verifyInputCategories = document.getElementById("categories-options");
-                console.log("verify categorie: " + verifyInputCategories.value);
 
                 if (verifyInputFile.value !== '' && verifyInputName.value !== ''){
-                //if (verifyInputFile.value !== null || verifyInputFile.value !== undefined || verifyInputFile.value !== '' && verifyInputName.value !== null || verifyInputName.value !== undefined || verifyInputName.value !== '' && verifyInputCategories.value !== null || verifyInputCategories.value !== undefined || verifyInputCategories.value !== ''){
                     closeModal2(event);
-                    // Ajouter l'objet "addNewProjectToLocalStorage" dans le localStorage
+                    /*
+                    // Ajouter l'objet "addNewProjectToLocalStorage" dans le localStorage "myProjects"
                     let copyOfMyProjects = localStorage.getItem("myProjects");
                     let projectsArray = JSON.parse(copyOfMyProjects);
                     projectsArray.push(addNewProjectToLocalStorage);
                     localStorage.setItem("myProjects", JSON.stringify(projectsArray));
+                    */
 
+                    // Ajouter l'objet "addNewProjectToLocalStorage" dans le localStorage "projectsAdded"
+                    const projectsAddedArray = [];
+                    const projectsAddedArrayStored  = JSON.parse(localStorage.getItem("projectsAdded"));
+
+                    if ( projectsAddedArrayStored == null){
+                        projectsAddedArray.push(addNewProjectToLocalStorage);
+                        //console.log("Il n'y a pas de projet supprimé dans le localStorage");
+                        //Puis sauvegarder la resultat dans le storage 
+                        localStorage.setItem("projectsAdded", JSON.stringify(projectsAddedArray));
+                    }else{
+                        let projectsAddedArrayUpdated = projectsAddedArray.concat(projectsAddedArrayStored);
+                        projectsAddedArrayUpdated.push(addNewProjectToLocalStorage);
+                        //console.log("j'ajoute un projet supprimé dans le localStorage");
+                        //Puis sauvegarder la resultat dans le storage 
+                        localStorage.setItem("projectsAdded", JSON.stringify(projectsAddedArrayUpdated));
+                    }
+                
                     // Suppression des datas du formulaire 
                     document.getElementById("js-reset-form").reset();
                         // Vider le file Input du formulaire
@@ -275,12 +305,10 @@ export function loadModal() {
                             }
                         }
                         clearFileInput(document.getElementById("resultat"));
-                        console.log("file content :" + document.getElementById("resultat"));
                     document.getElementById("resultat").removeAttribute("src");
 
                     // Suppression des anciens éléments de la modale 1
                     const removeDiv = document.getElementById("clear-modal-1");
-                    console.log(removeDiv);
                     removeDiv.remove(); 
 
                     // MODAL 1 : Re-génération de la div qui va acceuillir les nouveaux projects
@@ -299,13 +327,11 @@ export function loadModal() {
                     displayBlockAddPicture.style.display = "flex";
 
                     loadModal();
-                    //localStorage.setItem("newProject", JSON.stringify(addNewProjectToLocalStorage));
                 }else{
                     if (verifyInputFile.value == 0 && verifyInputName.value == 0){
                         // Je vérifie qu'un message d'erreur est présent
                         const divErrorMessage = document.querySelector("#form-add-project-error-message");
                         let content = divErrorMessage.innerHTML;
-                        console.log("contents:" + content);
                         if (content == ''){
                             // Si pas de message alors je l'affiche
                             const divDisplayErrorMessage = document.createElement("div");
@@ -324,7 +350,6 @@ export function loadModal() {
                         // Je vérifie qu'un message d'erreur est présent
                         const divErrorMessage = document.querySelector("#form-add-project-error-message");
                         let content = divErrorMessage.innerHTML;
-                        console.log("contents file:" + content);
                         if (content == ''){
                             // Si pas de message alors je l'affiche
                             const divDisplayErrorMessage = document.createElement("div");
@@ -344,7 +369,6 @@ export function loadModal() {
                             // Je vérifie qu'un message d'erreur est présent
                             const divErrorMessage = document.querySelector("#form-add-project-error-message");
                             let content = divErrorMessage.innerHTML;
-                            console.log("contents file:" + content);
                             if (content == ''){
                                 // Si pas de message alors je l'affiche
                                 const divDisplayErrorMessage = document.createElement("div");
@@ -364,7 +388,6 @@ export function loadModal() {
                 // Message si catégorie non selectionnée
                 const divErrorMessage = document.querySelector("#form-add-project-error-message");
                 let content = divErrorMessage.innerHTML;
-                console.log("contents:" + content);
                 if (content == ''){
                     const divDisplayErrorMessage = document.createElement("div");
                     divDisplayErrorMessage.setAttribute("id","form-display-error-message");
@@ -372,6 +395,13 @@ export function loadModal() {
                     document.getElementById("form-display-error-message").innerHTML += "Veuillez sélectionner une catégorie à votre projet";
                 }
             };
+            /*
+            // Je concat myProjects et projectsAddedArrayUpdated et j'update le localStorage
+            const myProjects = JSON.parse(localStorage.getItem("myProjects"));
+            const projectsAddedArrayUpdated = JSON.parse(localStorage.getItem("projectsAdded"));
+            let concatUpdatedProjects = myProjects.concat(projectsAddedArrayUpdated); 
+            localStorage.setItem("myProjects", JSON.stringify(concatUpdatedProjects));
+            */
         });
 
 };  
