@@ -22,9 +22,10 @@ export async function postProjectToAPI() {
         newProjectsToSend.forEach(function(project) {
         
             let formData = new FormData();
+            formData.append('category', project.categoryId);
             formData.append('title', project.title);
             formData.append('image', project.imageUrl);
-            formData.append('category', project.categoryId);
+            // https://www.youtube.com/watch?v=e13T3O0Iyvc
     
             let token = localStorage.getItem("token");
     
@@ -35,7 +36,8 @@ export async function postProjectToAPI() {
                     "Content-Type": "multipart/form-data; boundary=------WebKitFormBoundarysxw1qnGKu95V1YQu",
                     "Authorization": `Bearer ${token}`
                 },
-                body: formData
+                body: formData,
+                redirect: 'follow'
             });
         });
     }
