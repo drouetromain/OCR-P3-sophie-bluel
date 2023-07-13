@@ -58,11 +58,6 @@ export function loadModal() {
         if (content !== ''){
             const element = document.getElementById("form-display-error-message");
             element.remove(); 
-            
-            //const divDisplayErrorMessage = document.createElement("div");
-            //divDisplayErrorMessage.setAttribute("id","form-display-error-message");
-            //divErrorMessage.appendChild(divDisplayErrorMessage);
-            //document.getElementById("form-display-error-message").innerHTML += "Veuillez sélectionner une catégorie à votre projet";
         }
 
     }
@@ -195,10 +190,6 @@ export function loadModal() {
                 //Puis sauvegarder la resultat dans le storage 
                 localStorage.setItem("projectsDeleted", JSON.stringify(projectsDeletedArrayUpdated));
             }
-            //projectsDeletedArray.push({id:`${event.target.id}`});
-            //console.log("element.id :" + `${event.target.id}`);
-
-            
             
         })
 
@@ -221,8 +212,9 @@ export function loadModal() {
         btnSendNewProject.addEventListener("click", (event)=>{
             event.preventDefault();
 
-            // Récupérer l'url de l'image
+            // Récupérer l'url et le nom de l'image
             const urlImg = document.querySelector("#resultat");
+            const nameImg = document.getElementById('file').files[0].name;
 
             // Récupérer l' userId du localStorage
             const userId = localStorage.getItem("userId");
@@ -254,6 +246,7 @@ export function loadModal() {
                 id: null,
                 title: document.querySelector(".js-new-project-title").value,
                 imageUrl: urlImg.src,
+                imageName: nameImg,
                 categoryId: categoryIdNumber, 
                 userId: userIdNumber,
                 category: {
@@ -268,13 +261,6 @@ export function loadModal() {
 
                 if (verifyInputFile.value !== '' && verifyInputName.value !== ''){
                     closeModal2(event);
-                    /*
-                    // Ajouter l'objet "addNewProjectToLocalStorage" dans le localStorage "myProjects"
-                    let copyOfMyProjects = localStorage.getItem("myProjects");
-                    let projectsArray = JSON.parse(copyOfMyProjects);
-                    projectsArray.push(addNewProjectToLocalStorage);
-                    localStorage.setItem("myProjects", JSON.stringify(projectsArray));
-                    */
 
                     // Ajouter l'objet "addNewProjectToLocalStorage" dans le localStorage "projectsAdded"
                     const projectsAddedArray = [];
@@ -282,13 +268,13 @@ export function loadModal() {
 
                     if ( projectsAddedArrayStored == null){
                         projectsAddedArray.push(addNewProjectToLocalStorage);
-                        //console.log("Il n'y a pas de projet supprimé dans le localStorage");
+       
                         //Puis sauvegarder la resultat dans le storage 
                         localStorage.setItem("projectsAdded", JSON.stringify(projectsAddedArray));
                     }else{
                         let projectsAddedArrayUpdated = projectsAddedArray.concat(projectsAddedArrayStored);
                         projectsAddedArrayUpdated.push(addNewProjectToLocalStorage);
-                        //console.log("j'ajoute un projet supprimé dans le localStorage");
+
                         //Puis sauvegarder la resultat dans le storage 
                         localStorage.setItem("projectsAdded", JSON.stringify(projectsAddedArrayUpdated));
                     }
@@ -395,50 +381,6 @@ export function loadModal() {
                     document.getElementById("form-display-error-message").innerHTML += "Veuillez sélectionner une catégorie à votre projet";
                 }
             };
-            /*
-            // Je concat myProjects et projectsAddedArrayUpdated et j'update le localStorage
-            const myProjects = JSON.parse(localStorage.getItem("myProjects"));
-            const projectsAddedArrayUpdated = JSON.parse(localStorage.getItem("projectsAdded"));
-            let concatUpdatedProjects = myProjects.concat(projectsAddedArrayUpdated); 
-            localStorage.setItem("myProjects", JSON.stringify(concatUpdatedProjects));
-            */
         });
 
 };  
-    /*
-    function addNewProject(){
-        //const formToAddNewProject = document.querySelector(".js-form-add-new-project");
-        //formToAddNewProject.addEventListener("submit", function(event){
-        //event.preventDefault();
-
-        //
-        // Création de l'objet du nouveau projet (charge utile)
-        const newProject = {
-            id: "12",
-            imageUrl: target.querySelector("[name=image]").value,
-            title: target.querySelector("[name=name]").value,
-            userId: "1",
-            //localStorage.getItem("userId"),
-            //categoryId
-            //id
-            //name: event.target.querySelector("[name=categorie]").value,
-        };
-        console.log(newProject);
-        localStorage.setItem("newProject", JSON.stringify(newProject));
-        
-        /*
-        // Convertion de la charge utile en JSON
-        const chargeUtile = JSON.stringify(newProject);
-        console.log(chargeUtile);
-        fetch('http://localhost:5678/api/works'), {
-            method: "POST",
-            Headers: {"Content-Type": "application/json"},
-            body: chargeUtile,
-        }
-
-
-        //fetch('http://localhost:5678/api/categories')
-    
-        
-    } 
-    */
