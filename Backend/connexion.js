@@ -1,10 +1,7 @@
 function connexionUser() {
-    console.log("connexionUser loqded");
     const logInForm = document.querySelector(".login-form");
     logInForm.addEventListener("submit", function (event) {
         event.preventDefault();
-
-        console.log("hqppen here");
 
         // Création de l’objet de connexion
         const connexion = {
@@ -13,7 +10,6 @@ function connexionUser() {
         };
         // Création de la charge utile au format JSON
         const chargeUtile = JSON.stringify(connexion);
-        console.log(chargeUtile);
 
         // Appel de la fonction fetch avec toutes les informations nécessaires
         fetch("http://localhost:5678/api/users/login", {
@@ -36,7 +32,5 @@ function connexionUser() {
         });
     });
 }
-
-
 
 connexionUser();

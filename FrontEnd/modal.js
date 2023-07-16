@@ -171,8 +171,6 @@ export function loadModal() {
             figureToBeDeleted[0]?.remove();
             // Puis sauvegarder la resultat dans le storage 
             localStorage.setItem("myProjects", JSON.stringify(newProjects));
-            console.log("Je supprime le projet du localStorage");
-
             
             // Stockage des IDs des projets supprimés dans le localStorage
             const projectsDeletedArray = [];
@@ -180,13 +178,11 @@ export function loadModal() {
 
             if (projectsDeletedArrayStored == null){
                 projectsDeletedArray.push({id:`${event.target.id}`});
-                console.log("Il n'y a pas de projet supprimé dans le localStorage");
                 //Puis sauvegarder la resultat dans le storage 
                 localStorage.setItem("projectsDeleted", JSON.stringify(projectsDeletedArray));
             }else{
                 let projectsDeletedArrayUpdated = projectsDeletedArray.concat(projectsDeletedArrayStored);
                 projectsDeletedArrayUpdated.push({id:`${event.target.id}`});
-                console.log("j'ajoute un projet supprimé dans le localStorage");
                 //Puis sauvegarder la resultat dans le storage 
                 localStorage.setItem("projectsDeleted", JSON.stringify(projectsDeletedArrayUpdated));
             }
@@ -232,7 +228,6 @@ export function loadModal() {
                     // Je le supprime le message d'erreur
                     const divToRemove = document.getElementById("form-display-error-message");
                     divToRemove.remove();
-                    console.log("Je supprime le message d'erreur deja présent pour la catégorie");
                 }
                 // Récupéreration le categorie name
                 genererCategories(categories);
@@ -328,7 +323,6 @@ export function loadModal() {
                             // Sinon je le supprime
                             const divToRemove = document.getElementById("form-display-error-message");
                             divToRemove.remove();
-                            console.log("Je supprime le message d'erreur de l'image et du titre");
                         }
              
                     }else{ 
@@ -346,7 +340,6 @@ export function loadModal() {
                             // Sinon je le supprime
                             const divToRemove = document.getElementById("form-display-error-message");
                             divToRemove.remove();
-                            console.log("Je supprime le message d'erreur de l'image");
                         }
                             
 
@@ -365,7 +358,6 @@ export function loadModal() {
                                 // Sinon je le supprime
                                 const divToRemove = document.getElementById("form-display-error-message");
                                 divToRemove.remove();
-                                console.log("Je supprime le message d'erreur du titre");
                             }
                         }
                     } 

@@ -113,8 +113,6 @@ fileInput.addEventListener('change', function () {
         let hideBlockAddPicture = document.getElementById("js-hide-block-add-picture");
         hideBlockAddPicture.style.display = "none";
 
-        // Rajout du bloc "add-picture-block"
-
     } else {
         console.log("Aucun fichier sélectionné");
     }
