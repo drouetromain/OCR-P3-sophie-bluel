@@ -23,7 +23,7 @@ function connexionUser() {
             if (data.token != null && data.token != undefined){
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("userId", data.userId)
-                window.location.href = "/FrontEnd/";
+                window.location.href = "./";
 
             }else{
                 const errorMessage = document.querySelector('#error-message');
@@ -34,3 +34,5 @@ function connexionUser() {
 }
 
 connexionUser();
+
+//test

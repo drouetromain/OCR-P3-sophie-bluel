@@ -59,9 +59,9 @@ logoutBtn.addEventListener('click', function (event) {
         localStorage.removeItem("projectsDeleted");
         
         // Redirect to HP 
-        window.location.href = "/FrontEnd/";
+        window.location.href = "./";
     } else {
-        window.location.href = "/FrontEnd/login.html";
+        window.location.href = "./login.html";
     }
 
 });
@@ -77,7 +77,7 @@ if (imLoggedIn()) {
 
 } else {
     logoutBtn.textContent = "Login";
-    // Supprimer les filtres
+    // Afficher les filtres
     jsFilter.style.display = "flex";
     // Affichage des éléments d'édition
     topBarEditionMode.style.display = "none";
@@ -118,15 +118,6 @@ fileInput.addEventListener('change', function () {
     }
 });
 
-
-function getMaxId(projects) {
-    let maxId = 0;
-    projects.forEach(function (project) {
-        if (maxId < project?.id)
-            maxId = project?.id;
-    });
-    return maxId;
-}
 
 // Push des projets dans l'API
 let publishButton = document.querySelector('#btn-publish');
