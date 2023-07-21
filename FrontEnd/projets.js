@@ -25,10 +25,10 @@ function dataURLtoBlob(dataurl) {
 
 // API: Requete API pour ajouter les projets
 export async function postProjectToAPI() {
-
     const newProjectsToSend = JSON.parse(localStorage.getItem("projectsAdded"));
+    
     if (newProjectsToSend !== null) {
-        newProjectsToSend.forEach(async function (project) {
+        for (const project of newProjectsToSend) {
             var blob = dataURLtoBlob(project.imageUrl);
             let token = localStorage.getItem("token");
 
@@ -40,25 +40,21 @@ export async function postProjectToAPI() {
             data.append('title', project.title);
             data.append('category', stringCategory);
 
-            let config = {
-                method: 'post',
-                maxBodyLength: Infinity,
-                url: 'http://localhost:5678/api/works',
+            await fetch('http://localhost:5678/api/works', {
+                method: 'POST',
                 headers: {
-                    'Content-Type': 'multipart/form-data; boundary=------WebKitFormBoundarysxw1qnGKu95V1YQu',
                     'Authorization': `Bearer ${token}`,
                 },
-                data: data
-            };
-
-            await axios.request(config)
-                .then((response) => {
-                    console.log(JSON.stringify(response.data));
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        });
+                body: data
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        };
         localStorage.removeItem("projectsAdded");
     }
 }
